@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Equipamento</title>
+    <link rel="stylesheet" th:href="@{/css/menu.css}"> 
+</head>
+<body>
+    
+    <div th:insert="fragments/barraNavegacao :: navbar"></div>
+    
+    <br>
+    
+    <div class="form-header">
+        <h1>Editar Equipamento - ID: <span th:text="${equipamento.id}"></span></h1>
+    </div>
+    <br>
+    
+    <div th:insert="fragments/mensagem :: alerta"></div>
+    
+    <form th:action="@{/equipamento/edit}" th:object="${equipamento}" method="post">
+        
+        <input type="hidden" th:field="*{id}" />
+        
+        <div th:insert="fragments/formEquipamento :: formEquipamento"></div>
+
+        <div class="button-container">
+            <button type="submit">Salvar Alterações</button>
+
+            <button type="button" onclick="window.location.href='/equipamento/list'">Cancelar</button>
+        </div>
+    </form>
+
+</body>
+</html>

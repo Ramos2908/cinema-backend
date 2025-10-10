@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listagem de Sessões</title>
+    <link rel="stylesheet" th:href="@{/css/menu.css}"> 
+</head>
+<body>
+    
+    <div th:insert="fragments/barraNavegacao :: navbar"></div>
+    
+    <br>
+    
+    <h1>Listagem de Sessões</h1>
+    <a th:href="@{/sessao/form}">+ Cadastrar Nova Sessão</a>
+    
+    <div th:insert="fragments/mensagem :: alerta"></div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Filme</th>
+                <th>Sala</th>
+                <th>Data</th> 
+                <th>Horário</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="sessao : ${sessoes}">
+                <td th:text="${sessao.id}"></td>
+                <td th:text="${sessao.filme != null ? sessao.filme : 'N/A'}"></td> 
+                <td th:text="${sessao.sala != null ? 'Sala ' + sessao.sala.numeroSala : 'N/A'}"></td> 
+                <td th:text="${#dates.format(sessao.dataHora, 'dd/MM/yyyy')}"></td>
+                <td th:text="${#dates.format(sessao.dataHora, 'HH:mm')}"></td>
+
+                <td>
+                    <a th:href="@{/sessao/edit/{id}(id=${sessao.id})}">Editar</a>
+                    <a th:href="@{/sessao/delete/{id}(id=${sessao.id})}" 
+                       onclick="return confirm('Confirma a remoção desta Sessão?');">Remover</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <p th:if="${sessoes.empty}">Nenhuma sessão cadastrada.</p>
+
+</body>
+</html>

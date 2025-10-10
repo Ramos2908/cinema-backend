@@ -1,0 +1,27 @@
+<div th:fragment="navbar" class="menu">
+    <div class="sidenav">
+        <a href="/">Início</a>
+        
+        <button class="dropdown-btn">Salas &#x25BC;</button>
+        <div class="dropdown-container">
+            <a th:href="@{/sala/form}">Cadastrar</a> 
+            <a th:href="@{/sala/list}">Listar</a>
+        </div>
+        
+        <button class="dropdown-btn">Equipamentos &#x25BC;</button>
+        <div class="dropdown-container">
+            <a th:href="@{/equipamento/form}">Cadastrar</a>
+            <a th:href="@{/equipamento/list}">Listar</a>
+        </div>
+        
+        <button class="dropdown-btn">Sessões &#x25BC;</button>
+        <div class="dropdown-container">
+            <a th:href="@{/sessao/form}">Cadastrar</a> 
+            <a th:href="@{/sessao/list}">Listar</a>
+        </div>
+    </div>
+    
+    <script src="/js/menu.js"></script>
+    
+    <div th:insert="~{fragments/mensagem :: alerta}"></div> 
+</div>

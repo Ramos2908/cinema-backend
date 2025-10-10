@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listagem de Equipamentos</title>
+    <link rel="stylesheet" th:href="@{/css/menu.css}"> 
+</head>
+<body>
+    
+    <div th:insert="fragments/barraNavegacao :: navbar"></div>
+    
+    <br>
+    
+    <h1>Listagem de Equipamentos</h1>
+    <a th:href="@{/equipamento/form}">+ Cadastrar Novo Equipamento</a>
+    
+    <div th:insert="fragments/mensagem :: alerta"></div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Projetor</th>
+                <th>Sistema de Som</th>
+                <th>Dimensão da Tela</th> 
+                <th>Ar Condicionado</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="equipamento : ${equipamentos}">
+                <td th:text="${equipamento.id}"></td>
+                <td th:text="${equipamento.modeloProjetor}"></td> 
+                <td th:text="${equipamento.sistemaSom}"></td> 
+                <td th:text="${equipamento.telaDimensao}"></td>
+                <td th:text="${equipamento.arCondicionado ? 'Sim' : 'Não'}"></td>
+                <td>
+                    <a th:href="@{/equipamento/edit/{id}(id=${equipamento.id})}">Editar</a>
+                    <a th:href="@{/equipamento/delete/{id}(id=${equipamento.id})}" 
+                       onclick="return confirm('Confirma a remoção deste Equipamento?');">Remover</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <p th:if="${equipamentos.empty}">Nenhum equipamento cadastrado.</p>
+
+</body>
+</html>

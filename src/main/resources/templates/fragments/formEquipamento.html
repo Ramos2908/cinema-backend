@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+    <div th:fragment="formEquipamento">
+        
+        <div class="form-group">
+            <label for="modeloProjetor">Modelo do Projetor:</label>
+            <input type="text" id="modeloProjetor" th:field="*{modeloProjetor}" required/>
+            <div th:if="${#fields.hasErrors('modeloProjetor')}" th:errors="*{modeloProjetor}" class="error-message"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="sistemaSom">Sistema de Som (ex: Dolby Atmos, 5.1):</label>
+            <input type="text" id="sistemaSom" th:field="*{sistemaSom}" required/>
+            <div th:if="${#fields.hasErrors('sistemaSom')}" th:errors="*{sistemaSom}" class="error-message"></div>
+        </div>
+        
+        <div class="form-group">
+            <label for="telaDimensao">Dimensão da Tela (ex: 10m x 5m):</label>
+            <input type="text" id="telaDimensao" th:field="*{telaDimensao}" required/>
+            <div th:if="${#fields.hasErrors('telaDimensao')}" th:errors="*{telaDimensao}" class="error-message"></div>
+        </div>
+
+        <div class="form-group">
+            <label>Ar Condicionado:</label>
+            <div class="checkbox-group">
+                <input type="radio" id="arCondicionadoSim" th:field="*{arCondicionado}" th:value="true" required/>
+                <label for="arCondicionadoSim">Sim</label>
+
+                <input type="radio" id="arCondicionadoNao" th:field="*{arCondicionado}" th:value="false" required/>
+                <label for="arCondicionadoNao">Não</label>
+            </div>
+            <div th:if="${#fields.hasErrors('arCondicionado')}" th:errors="*{arCondicionado}" class="error-message"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="outros">Outros Detalhes:</label>
+            <textarea id="outros" th:field="*{outros}"></textarea>
+            <div th:if="${#fields.hasErrors('outros')}" th:errors="*{outros}" class="error-message"></div>
+        </div>
+        
+    </div>
+
+</body>
+</html>

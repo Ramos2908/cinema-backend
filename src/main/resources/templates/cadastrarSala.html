@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Sala</title>
+    <link rel="stylesheet" th:href="@{/css/menu.css}"> 
+</head>
+<body>
+    
+    <div th:insert="fragments/barraNavegacao :: navbar"></div>
+    
+    <br>
+    
+    <div class="form-header">
+        <h1>Cadastrar Nova Sala</h1>
+    </div>
+    
+    <div th:insert="fragments/mensagem :: alerta"></div>
+    
+    <form th:action="@{/sala/save}" th:object="${sala}" method="post">
+        
+        <input type="hidden" th:field="*{id}" />
+        
+        <div th:insert="fragments/formSala :: formSala"></div> 
+
+        <div class="button-container">
+            <button type="submit">Salvar Sala</button>
+            <button type="button" onclick="window.location.href='/sala/list'">Cancelar</button>
+        </div>
+    </form>
+
+</body>
+</html>

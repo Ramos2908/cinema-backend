@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listagem de Salas</title>
+    <link rel="stylesheet" th:href="@{/css/menu.css}"> 
+    </head>
+<body>
+    
+    <div th:insert="fragments/barraNavegacao :: navbar"></div>
+    
+    <br>
+    
+    <h1>Listagem de Salas</h1>
+    <a th:href="@{/sala/form}">+ Cadastrar Nova Sala</a>
+    
+    <div th:insert="fragments/mensagem :: alerta"></div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Número da Sala</th>
+                <th>Capacidade</th> 
+                <th>Tipo de Exibição</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            <tr th:each="sala : ${salas}">
+                <td th:text="${sala.id}"></td>
+                <td th:text="${sala.numeroSala}"></td> 
+                <td th:text="${sala.capacidade}"></td> 
+                <td th:text="${sala.tipoSala}"></td>
+                <td th:text="${sala.status}"></td> 
+
+                <td>
+                    <a th:href="@{/sala/edit/{id}(id=${sala.id})}">Editar</a>
+                    
+                    <a th:href="@{/sala/delete/{id}(id=${sala.id})}" 
+                       onclick="return confirm('Confirma a remoção da Sala ' + [[${sala.numeroSala}]] + '?');">Remover</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <p th:if="${salas.empty}">Nenhuma sala cadastrada.</p>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Sessão</title>
+</head>
+<body>
+    <div th:insert="fragments/barraNavegacao :: navbar"></div>
+    <h1>Editar Sessão</h1>
+    <form th:action="@{/sessao/edit}" th:object="${sessao}" method="post">
+        <input type="hidden" th:field="*{id}" />
+        <div>
+            <label for="filme">Filme:</label>
+            <input type="text" id="filme" th:field="*{filme}" required />
+        </div>
+        <div>
+            <label for="dataHora">Data e Hora da Sessão:</label>
+            <input type="datetime-local" id="dataHora" th:field="*{dataHora}" required />
+        </div>
+        <div>
+            <label for="idioma">Idioma:</label>
+            <input type="text" id="idioma" th:field="*{idioma}" required />
+        </div>
+        <div>
+            <label>
+                <input type="checkbox" th:field="*{legendado}" /> Legendado
+            </label>
+        </div>
+        <div>
+            <label for="duracaoMinutos">Duração (minutos):</label>
+            <input type="number" id="duracaoMinutos" th:field="*{duracaoMinutos}" required min="1" />
+        </div>
+        <div>
+            <label for="status">Status da Sessão:</label>
+            <select id="status" th:field="*{status}" required>
+                <option value="agendada">Agendada</option>
+                <option value="em andamento">Em Andamento</option>
+                <option value="concluida">Concluída</option>
+                <option value="cancelada">Cancelada</option>
+            </select>
+        </div>
+        <div>
+            <label for="sala">Sala:</label>
+            <select id="sala" th:field="*{sala}" required>
+                <option value="" disabled>Selecione uma sala</option>
+                <option th:each="sala : ${salasDisponiveis}" th:value="${sala.id}" th:text="'Sala ' + ${sala.numeroSala}"></option>
+            </select>
+        </div>
+        <div>
+            <button type="submit">Salvar Alterações</button>
+            <button type="button" onclick="window.location.href='/sessao/list'">Cancelar</button>
+        </div>
+    </form>
+</body>
+</html>

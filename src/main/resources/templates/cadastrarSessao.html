@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Sessão</title>
+    <link rel="stylesheet" th:href="@{/css/menu.css}">
+    </head>
+<body>
+    <div th:insert="fragments/barraNavegacao :: navbar"></div>
+    <h1>Cadastro de Sessão</h1>
+
+    <form th:action="@{/sessao/save}" th:object="${sessao}" method="post">
+        
+        <input type="hidden" th:field="*{id}" />
+
+        <div>
+            <label for="filme">Filme:</label>
+            <input type="text" id="filme" th:field="*{filme}" required/>
+            <span th:if="${#fields.hasErrors('filme')}" th:errors="*{filme}" class="error"></span>
+        </div>
+
+        <div>
+            <label for="dataHora">Data e Hora da Sessão:</label>
+            <input type="datetime-local" id="dataHora" th:field="*{dataHora}" required/>
+            <span th:if="${#fields.hasErrors('dataHora')}" th:errors="*{dataHora}" class="error"></span>
+        </div>
+
+        <div>
+            <label for="idioma">Idioma:</label>
+            <input type="text" id="idioma" th:field="*{idioma}" required/>
+            <span th:if="${#fields.hasErrors('idioma')}" th:errors="*{idioma}" class="error"></span>
+        </div>
+
+        <div>
+            <label>
+                <input type="checkbox" th:field="*{legendado}" /> Legendado
+            </label>
+            <span th:if="${#fields.hasErrors('legendado')}" th:errors="*{legendado}" class="error"></span>
+        </div>
+
+        <div>
+            <label for="duracaoMinutos">Duração (minutos):</label>
+            <input type="number" id="duracaoMinutos" th:field="*{duracaoMinutos}" required min="1"/>
+            <span th:if="${#fields.hasErrors('duracaoMinutos')}" th:errors="*{duracaoMinutos}" class="error"></span>
+        </div>
+        
+        <div>
+            <label for="status">Status da Sessão:</label>
+            <select id="status" th:field="*{status}" required>
+                <option value="agendada">Agendada</option>
+                <option value="em andamento">Em Andamento</option>
+                <option value="concluida">Concluída</option>
+                <option value="cancelada">Cancelada</option>
+            </select>
+            <span th:if="${#fields.hasErrors('status')}" th:errors="*{status}" class="error"></span>
+        </div>
+
+        <div>
+            <label for="sala">Sala:</label>
+            <select id="sala" th:field="*{sala}" required>
+                <option value="" disabled selected>Selecione uma sala</option>
+                <option th:each="sala : ${salasDisponiveis}" th:value="${sala.id}" th:text="'Sala ' + ${sala.numeroSala}"></option>
+            </select>
+            <span th:if="${#fields.hasErrors('sala')}" th:errors="*{sala}" class="error"></span>
+        </div>
+
+        <div>
+            <button type="submit">Salvar Sessão</button>
+            <button type="button" onclick="window.location.href='/sessao/list'">Cancelar</button>
+        </div>
+    </form>
+
+</body>
+</html>

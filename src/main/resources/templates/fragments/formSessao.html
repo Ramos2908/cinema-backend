@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+    <div th:fragment="formSessao">
+        
+        <div class="form-group">
+            <label for="filme">Filme (ID ou Nome):</label>
+            <input type="text" id="filme" th:field="*{filme.id}" required/> 
+            <div th:if="${#fields.hasErrors('filme')}" th:errors="*{filme}" class="error-message"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="sala">Sala:</label>
+            <select id="sala" th:field="*{sala}" required>
+                <option value="">Selecione a Sala</option>
+                <option th:each="sala : ${salasDisponiveis}" 
+                        th:value="${sala.id}" 
+                        th:text="'Sala: ' + ${sala.numeroSala} + ' - ' + ${sala.tipoSala}"></option>
+            </select>
+            <div th:if="${#fields.hasErrors('sala')}" th:errors="*{sala}" class="error-message"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="data">Data:</label>
+            <input type="date" id="data" th:field="*{data}" required/>
+            <div th:if="${#fields.hasErrors('data')}" th:errors="*{data}" class="error-message"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="horario">Horário:</label>
+            <input type="time" id="horario" th:field="*{horario}" required/>
+            <div th:if="${#fields.hasErrors('horario')}" th:errors="*{horario}" class="error-message"></div>
+        </div>
+        
+    </div>
+
+</body>
+</html>
