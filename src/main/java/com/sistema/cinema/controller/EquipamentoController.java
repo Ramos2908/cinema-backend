@@ -69,8 +69,14 @@ public class EquipamentoController {
 
     // === 5. LISTAR TODOS OS EQUIPAMENTOS ===
     @GetMapping("/list") 
-    public String listarEquipamentos(Model model) {
+    public String listarEquipamentos(Model model, @ModelAttribute("mensagemSucesso") String mensagemSucesso, @ModelAttribute("mensagemErro") String mensagemErro) {
         model.addAttribute("equipamentos", equipamentoService.findAll());
+        if (mensagemSucesso != null && !mensagemSucesso.isEmpty()) {
+            model.addAttribute("mensagemSucesso", mensagemSucesso);
+        }
+        if (mensagemErro != null && !mensagemErro.isEmpty()) {
+            model.addAttribute("mensagemErro", mensagemErro);
+        }
         return "listarEquipamento";
     }
 

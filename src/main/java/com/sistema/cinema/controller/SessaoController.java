@@ -73,6 +73,8 @@ public class SessaoController {
             sessaoExistente.setFilme(sessao.getFilme());
             sessaoExistente.setSala(sessao.getSala());
             sessaoExistente.setDataHora(sessao.getDataHora());
+            sessaoExistente.setLegendado(sessao.isLegendado());
+            sessaoExistente.setStatus(sessao.getStatus());
             sessaoService.save(sessaoExistente);
             ra.addFlashAttribute("mensagemSucesso", "Sessão do filme '" + sessao.getFilme() + "' atualizada com sucesso!");
         } catch (RuntimeException e) {

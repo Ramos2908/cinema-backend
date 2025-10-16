@@ -15,7 +15,8 @@
         <h1>Cadastrar Novo Equipamento</h1>
     </div>
     
-    <div th:insert="fragments/mensagem :: alerta"></div>
+    <div th:if="${mensagemSucesso}" th:insert="fragments/mensagem :: alerta"></div>
+    <div th:if="${mensagemErro}" th:insert="fragments/mensagem :: alerta"></div>
     
     <form th:action="@{/equipamento/save}" th:object="${equipamento}" method="post">
         

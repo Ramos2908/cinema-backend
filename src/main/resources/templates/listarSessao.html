@@ -25,6 +25,8 @@
                 <th>Sala</th>
                 <th>Data</th> 
                 <th>Horário</th>
+                <th>Status</th>
+                <th>Legendado</th>
                 <th>Ações</th>
             </tr>
         </thead>
@@ -35,7 +37,8 @@
                 <td th:text="${sessao.sala != null ? 'Sala ' + sessao.sala.numeroSala : 'N/A'}"></td> 
                 <td th:text="${#dates.format(sessao.dataHora, 'dd/MM/yyyy')}"></td>
                 <td th:text="${#dates.format(sessao.dataHora, 'HH:mm')}"></td>
-
+                <td th:text="${sessao.status}"></td>
+                <td th:text="${sessao.legendado ? 'Sim' : 'Não'}"></td>
                 <td>
                     <a th:href="@{/sessao/edit/{id}(id=${sessao.id})}">Editar</a>
                     <a th:href="@{/sessao/delete/{id}(id=${sessao.id})}" 
