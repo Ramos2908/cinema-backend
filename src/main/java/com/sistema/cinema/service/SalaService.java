@@ -53,9 +53,10 @@ public class SalaService {
      * @throws RuntimeException se a sala não existir.
      */
     public void deleteById(Long id) {
-        // Implementação do fluxo de deleção: verifica a existência antes de deletar.
-        if (!salaRepository.existsById(id)) {
-            throw new RuntimeException("Sala não encontrada");
+        Sala sala = salaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Sala não encontrada"));
+        if (sala.getEquipamento() != null) {
+            throw new RuntimeException("A sala não pode ser deletada porque está conectada a um equipamento.");
         }
         salaRepository.deleteById(id);
     }
