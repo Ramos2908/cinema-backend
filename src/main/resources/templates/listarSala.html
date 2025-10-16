@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listagem de Salas</title>
     <link rel="stylesheet" th:href="@{/css/menu.css}"> 
-    </head>
+</head>
 <body>
     
     <div th:insert="fragments/barraNavegacao :: navbar"></div>
@@ -40,14 +40,15 @@
                 <td>
                     <a th:href="@{/sala/edit/{id}(id=${sala.id})}">Editar</a>
                     
-                    <a th:href="@{/sala/delete/{id}(id=${sala.id})}" 
-                       onclick="return confirm('Confirma a remoção da Sala ' + [[${sala.numeroSala}]] + '?');">Remover</a>
+                    <a th:href="@{/sala/delete/{id}(id=${sala.id})}"
+                    onclick="return confirm('Confirma a remoção da Sala ' + [[${sala.numeroSala}]] + '?');">Remover</a>
                 </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(salas)}">
+                <td colspan="6">Nenhuma sala cadastrada.</td>
             </tr>
         </tbody>
     </table>
-    
-    <p th:if="${salas.empty}">Nenhuma sala cadastrada.</p>
 
 </body>
 </html>

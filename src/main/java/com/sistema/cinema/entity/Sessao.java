@@ -97,8 +97,8 @@ public class Sessao implements Serializable {
         this.idioma = idioma;
     }
 
-    // ALTERADO: Retorno e parâmetro do Setter agora são 'boolean'
-    public boolean isLegendado() { // Usando o padrão isXXXX para boolean
+   
+    public boolean isLegendado() { 
         return legendado;
     }
 
@@ -106,7 +106,7 @@ public class Sessao implements Serializable {
         this.legendado = legendado;
     }
 
-    // ALTERADO: Retorno e parâmetro do Setter agora são 'int'
+   
     public int getDuracaoMinutos() {
         return duracaoMinutos;
     }

@@ -8,6 +8,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sistema.cinema.entity.Equipamento;
 import com.sistema.cinema.service.EquipamentoService;
+import com.sistema.cinema.service.SalaService;
 
 import jakarta.validation.Valid;
 
@@ -18,11 +19,8 @@ public class EquipamentoController {
     @Autowired
     protected EquipamentoService equipamentoService;
 
-    // Rota base
-    @GetMapping({"", "/"})
-    public String handleBaseRequest() {
-        return "redirect:/equipamento/list";
-    }
+    @Autowired
+    protected SalaService salaService;
 
     // === 1. FORMULÁRIO PARA CADASTRAR NOVO EQUIPAMENTO ===
     @GetMapping("/form") 
@@ -79,6 +77,11 @@ public class EquipamentoController {
     // === 6. DELETAR EQUIPAMENTO ===
     @GetMapping("/delete/{id}")
     public String deletarEquipamento(@PathVariable Long id, RedirectAttributes ra) {
+        // Verifica se o equipamento está vinculado a alguma sala
+        if (salaService.existsByEquipamentoId(id)) {
+            ra.addFlashAttribute("mensagemErro", "Este equipamento não pode ser excluído porque está vinculado a uma sala.");
+            return "redirect:/equipamento/list";
+        }
         try {
             equipamentoService.deleteById(id);
             ra.addFlashAttribute("mensagemSucesso", "Equipamento deletado com sucesso!");

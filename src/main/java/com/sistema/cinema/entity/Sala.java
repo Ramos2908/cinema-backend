@@ -17,6 +17,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.Version;
 
 @SuppressWarnings("serial")
 @Entity
@@ -54,6 +55,9 @@ public class Sala implements Serializable {
     // Relacionamento 1:N com Sessao
     @OneToMany(mappedBy = "sala", cascade = CascadeType.ALL)
     private List<Sessao> sessoes;
+
+    @Version
+    private Integer version;
 
     // -------------------- GETTERS E SETTERS --------------------
     public Long getId() {

@@ -69,4 +69,8 @@ public class SalaService {
     public boolean existsByNumeroSala(int numeroSala) {
         return salaRepository.existsByNumeroSala(numeroSala);
     }
+
+    public boolean existsByEquipamentoId(Long equipamentoId) {
+        return salaRepository.existsByEquipamentoId(equipamentoId);
+    }
 }

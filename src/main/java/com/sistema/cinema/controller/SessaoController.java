@@ -8,7 +8,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sistema.cinema.entity.Sessao;
 import com.sistema.cinema.service.SessaoService;
-import com.sistema.cinema.service.SalaService; // Importação necessária
+import com.sistema.cinema.service.SalaService; 
 
 import jakarta.validation.Valid;
 
@@ -68,7 +68,12 @@ public class SessaoController {
     @PostMapping("/edit")
     public String atualizarSessao(@Valid @ModelAttribute Sessao sessao, RedirectAttributes ra) {
         try {
-            sessaoService.save(sessao);
+            Sessao sessaoExistente = sessaoService.findById(sessao.getId());
+            // Atualize apenas os campos necessários
+            sessaoExistente.setFilme(sessao.getFilme());
+            sessaoExistente.setSala(sessao.getSala());
+            sessaoExistente.setDataHora(sessao.getDataHora());
+            sessaoService.save(sessaoExistente);
             ra.addFlashAttribute("mensagemSucesso", "Sessão do filme '" + sessao.getFilme() + "' atualizada com sucesso!");
         } catch (RuntimeException e) {
             ra.addFlashAttribute("mensagemErro", "Erro ao atualizar: " + e.getMessage());
