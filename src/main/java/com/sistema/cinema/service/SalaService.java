@@ -46,6 +46,13 @@ public class SalaService {
         return salaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Sala não encontrada"));
     }
+
+    /**
+     * Busca uma sala pelo equipamento associado (caso exista).
+     */
+    public Optional<Sala> findByEquipamentoId(Long equipamentoId) {
+        return salaRepository.findByEquipamentoId(equipamentoId);
+    }
     
     /**
      * Deleta uma sala pelo ID.
@@ -53,10 +60,9 @@ public class SalaService {
      * @throws RuntimeException se a sala não existir.
      */
     public void deleteById(Long id) {
-        Sala sala = salaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Sala não encontrada"));
-        if (sala.getEquipamento() != null) {
-            throw new RuntimeException("A sala não pode ser deletada porque está conectada a um equipamento.");
+       
+        if (!salaRepository.existsById(id)) {
+            throw new RuntimeException("Sala não encontrada");
         }
         salaRepository.deleteById(id);
     }
@@ -71,6 +77,14 @@ public class SalaService {
         return salaRepository.existsByNumeroSala(numeroSala);
     }
 
+    /**
+     * Verifica se já existe uma sala com o mesmo número, ignorando a sala com o id fornecido.
+     * Útil para checagem de duplicidade durante atualização.
+     */
+    public boolean existsByNumeroSalaAndIdNot(int numeroSala, Long id) {
+        return salaRepository.existsByNumeroSalaAndIdNot(numeroSala, id);
+    }
+    
     public boolean existsByEquipamentoId(Long equipamentoId) {
         return salaRepository.existsByEquipamentoId(equipamentoId);
     }

@@ -27,7 +27,13 @@
 
         <div>
             <label for="idioma">Idioma:</label>
-            <input type="text" id="idioma" th:field="*{idioma}" required/>
+            <select id="idioma" th:field="*{idioma}" required>
+                <option value="" disabled>Selecione o idioma</option>
+                <option th:each="idioma : ${idiomasDisponiveis}"
+                        th:value="${idioma}"
+                        th:text="${idioma}">
+                </option>
+            </select>
             <span th:if="${#fields.hasErrors('idioma')}" th:errors="*{idioma}" class="error"></span>
         </div>
 

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Editar Sessão</title>
+    <link rel="stylesheet" th:href="@{/css/menu.css}">
 </head>
 <body>
     <div th:insert="fragments/barraNavegacao :: navbar"></div>
@@ -19,7 +20,13 @@
         </div>
         <div>
             <label for="idioma">Idioma:</label>
-            <input type="text" id="idioma" th:field="*{idioma}" required />
+            <select id="idioma" th:field="*{idioma}" required>
+                <option value="" disabled>Selecione o idioma</option>
+                <option th:each="idioma : ${idiomasDisponiveis}"
+                        th:value="${idioma}"
+                        th:text="${idioma}">
+                </option>
+            </select>
         </div>
         <div>
             <label>

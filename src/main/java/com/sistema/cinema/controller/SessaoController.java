@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sistema.cinema.entity.Sessao;
+import com.sistema.cinema.entity.Sala;
 import com.sistema.cinema.service.SessaoService;
 import com.sistema.cinema.service.SalaService; 
 
@@ -40,6 +41,12 @@ public class SessaoController {
     @PostMapping("/save")
     public String salvarSessao(@Valid @ModelAttribute Sessao sessao, Model model, RedirectAttributes ra) {
         try {
+            
+            
+            if (sessao.getSala() != null && sessao.getSala().getId() != null) {
+                Sala salaGerenciada = salaService.findById(sessao.getSala().getId());
+                sessao.setSala(salaGerenciada);
+            }
             sessaoService.save(sessao);
             ra.addFlashAttribute("mensagemSucesso", "Sessão do filme '" + sessao.getFilme() + "' salva com sucesso!");
             return "redirect:/sessao/list";

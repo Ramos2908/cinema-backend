@@ -79,16 +79,38 @@ public class SalaController {
     public String atualizarSala(@Valid @ModelAttribute Sala sala, RedirectAttributes ra) {
 
         try {
+           
             Sala salaOriginal = salaService.findById(sala.getId());
 
-            if ((salaOriginal.getNumeroSala() != sala.getNumeroSala()) &&
-                    salaService.existsByNumeroSala(sala.getNumeroSala())) {
+            // Verifica duplicidade do número apenas se foi alterado
+            if (salaService.existsByNumeroSalaAndIdNot(sala.getNumeroSala(), sala.getId())) {
                 ra.addFlashAttribute("mensagemErro", "O número de sala " + sala.getNumeroSala() + " já está em uso por outra sala.");
                 return "redirect:/sala/edit/" + sala.getId();
             }
 
-            salaService.save(sala);
-            ra.addFlashAttribute("mensagemSucesso", "Sala " + sala.getNumeroSala() + " atualizada com sucesso!");
+            // Atualiza campos no objeto gerenciado
+            salaOriginal.setNumeroSala(sala.getNumeroSala());
+            salaOriginal.setCapacidade(sala.getCapacidade());
+            salaOriginal.setTipoSala(sala.getTipoSala());
+            salaOriginal.setStatus(sala.getStatus());
+
+            
+            if (sala.getEquipamento() != null && sala.getEquipamento().getId() != null) {
+                Long novoEquipId = sala.getEquipamento().getId();
+          
+                if (salaOriginal.getEquipamento() == null || !salaOriginal.getEquipamento().getId().equals(novoEquipId)) {
+                    if (salaService.existsByEquipamentoId(novoEquipId)) {
+                        ra.addFlashAttribute("mensagemErro", "Este equipamento já está cadastrado em outra sala.");
+                        return "redirect:/sala/edit/" + sala.getId();
+                    }
+                }
+                salaOriginal.setEquipamento(equipamentoService.findById(novoEquipId));
+            } else {
+                salaOriginal.setEquipamento(null);
+            }
+
+            salaService.save(salaOriginal);
+            ra.addFlashAttribute("mensagemSucesso", "Sala " + salaOriginal.getNumeroSala() + " atualizada com sucesso!");
         } catch (RuntimeException e) {
             ra.addFlashAttribute("mensagemErro", "Erro ao atualizar: " + e.getMessage());
         }
