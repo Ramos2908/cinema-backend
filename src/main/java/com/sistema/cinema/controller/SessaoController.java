@@ -12,6 +12,7 @@ import com.sistema.cinema.service.SessaoService;
 import com.sistema.cinema.service.SalaService; 
 
 import jakarta.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/sessao")
@@ -27,6 +28,8 @@ public class SessaoController {
     private void adicionarObjetosComuns(Model model) {
         // Adiciona a lista de salas para preencher o campo de seleção (dropdown)
         model.addAttribute("salasDisponiveis", salaService.findAll()); 
+        // Adiciona os idiomas disponíveis para os formulários (cadastrar/editar)
+        model.addAttribute("idiomasDisponiveis", List.of("Português", "Espanhol", "Inglês"));
     }
 
     // === 1. FORMULÁRIO PARA CADASTRAR NOVA SESSÃO ===
@@ -81,6 +84,9 @@ public class SessaoController {
             sessaoExistente.setSala(sessao.getSala());
             sessaoExistente.setDataHora(sessao.getDataHora());
             sessaoExistente.setLegendado(sessao.isLegendado());
+            // Atualiza idioma e duração também (eram ignorados antes)
+            sessaoExistente.setIdioma(sessao.getIdioma());
+            sessaoExistente.setDuracaoMinutos(sessao.getDuracaoMinutos());
             sessaoExistente.setStatus(sessao.getStatus());
             sessaoService.save(sessaoExistente);
             ra.addFlashAttribute("mensagemSucesso", "Sessão do filme '" + sessao.getFilme() + "' atualizada com sucesso!");

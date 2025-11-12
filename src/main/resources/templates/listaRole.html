@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>listar alunos</title>
+    <link rel="stylesheet" th:href="@{/css/menu.css}">
+	<script src="/js/menu.js"></script>
+</head>
+<body>
+    <div th:insert="fragments/barraNavegacao :: navbar"></div>
+
+
+    <h1>LISTAR ROLE</h1>
+    <a th:href="@{/role/form}">+ Cadastrar Novo Role</a>
+    
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Role</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="role : ${roles}">
+                <td th:text="${role.nome}"></td>
+                <td class="actions">
+                    <a th:href="@{'/role/edit/' + ${role.id}}">Editar</a> |
+                    <a th:href="@{'/role/delete/' + ${role.id}}" onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</a>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(roles)}">
+                <td colspan="2">Nenhum role cadastrado.</td>
+            </tr>
+            
+            <!-- Flash / error messages -->
+    <div th:if="${mensagemSucesso}" class="alert success" th:text="${mensagemSucesso}"></div>
+    <div th:if="${mensagemErro}" class="alert error" th:text="${mensagemErro}"></div>
+         </tbody>
+ </table>
+ 
+ </body>
+ </html>

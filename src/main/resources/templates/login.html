@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form th:action="@{/login}" method="post">
+
+		<label for="idLogin">Login:</label>
+		<input id="idLogin" type="text" style="width: 200px"
+			name="username" placeholder="Login" required />
+		<label
+			for="idPassword">Senha:</label>
+		<input id="idPassword" style="width: 200px"
+			type="password" name="password" placeholder="Senha" required />
+
+		<button type="submit">Entrar</button>
+		
+		<!-- Mensagens de erro e logout -->
+    <div th:if="${param.error}">
+        <p style="color:red;">Usuário ou senha inválidos.</p>
+    </div>
+    <div th:if="${param.logout}">
+        <p style="color:green;">Logout realizado com sucesso.</p>
+    </div>
+</form>
+</body>
+</html>

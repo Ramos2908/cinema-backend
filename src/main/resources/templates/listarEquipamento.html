@@ -17,7 +17,7 @@
     
     <div th:insert="fragments/mensagem :: alerta"></div>
 
-    <table>
+    <table class="data-table">
         <thead>
             <tr>
                 <th>ID</th>
@@ -25,6 +25,7 @@
                 <th>Sistema de Som</th>
                 <th>Dimensão da Tela</th> 
                 <th>Ar Condicionado</th>
+                <th>Outros</th>
                 <th>Ações</th>
             </tr>
         </thead>
@@ -35,16 +36,18 @@
                 <td th:text="${equipamento.sistemaSom}"></td> 
                 <td th:text="${equipamento.telaDimensao}"></td>
                 <td th:text="${equipamento.arCondicionado ? 'Sim' : 'Não'}"></td>
-                <td>
+                <td th:text="${equipamento.outros != null} ? ${equipamento.outros} : ' - '"></td>
+                <td class="actions">
                     <a th:href="@{/equipamento/edit/{id}(id=${equipamento.id})}">Editar</a>
                     <a th:href="@{/equipamento/delete/{id}(id=${equipamento.id})}" 
                        onclick="return confirm('Confirma a remoção deste Equipamento?');">Remover</a>
                 </td>
             </tr>
+            <tr th:if="${#lists.isEmpty(equipamentos)}">
+                <td colspan="7">Nenhum equipamento cadastrado.</td>
+            </tr>
         </tbody>
     </table>
-    
-    <p th:if="${equipamentos.empty}">Nenhum equipamento cadastrado.</p>
-
-</body>
-</html>
+ 
+ </body>
+ </html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Role</title>
+    <link rel="stylesheet" th:href="@{/css/menu.css}">
+   
+</head>
+<body>
+    
+<!--barra de navegação-->
+		<div th:insert="fragments/barraNavegacao :: navbar"></div>
+		<br>
+		
+        
+		<div class="form-header">
+            <h1>Editar de Role</h1>
+		</div>
+		<br>
+        
+        <form th:action="@{/role/edit}"  th:object="${roleObj}" method="post">
+            <br>
+
+            <input type="hidden" id="idId" th:field="*{id}" />
+                <br>
+
+           <div th:insert="fragments/formRole :: formRole"></div>
+
+           <br>
+
+           <div>
+               <button type="submit">Salvar</button>
+               <button type="button" onclick="window.location.href='/role/list'">Cancelar</button>
+           </div>
+        </form>
+
+</body>
+</html>

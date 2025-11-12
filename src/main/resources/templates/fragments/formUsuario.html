@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div th:fragment="formUsuario" class="form">
+        
+            <label for="idNome">Nome:</label>
+            <input type="text" id="idNome" th:field="*{nome}" placeholder="Informe o nome do curso" required/>
+            <br>
+        
+            <label for="idMatricula">matricula:</label>
+            <input type="text" id="idMatricula" th:field="*{matricula}" placeholder="Informe a matrícula do usuário" required/>
+            <br>
+            
+            <label for="idLogin">Login:</label>
+            <input type="text" id="idLogin" th:field="*{login}" placeholder="Informe o login do usuário" required/>
+            <br>
+
+            <label for="idEmail">Email:</label>
+            <input type="email" id="idEmail" th:field="*{email}" placeholder="Informe o email do usuário" required/>
+            <br>
+
+            <label for="idSenha">Senha:</label>
+            <input type="password" id="idSenha" th:field="*{senha}" placeholder="Informe a senha do usuário" required/>
+            <br>
+
+            <label for="idDataNascimento">Data de Nascimento:</label>
+            <input type="date" id="idDataNascimento" th:field="*{dataNascimento}" placeholder="Informe a data de nascimento" required/>
+            <br>
+			
+            <label for="idRole">Roles:</label>
+            <!-- submit selected role IDs as 'roleIds' to avoid Spring auto-binding into usuario.roles -->
+            <select id="idRole" th:name="roleIds" multiple="multiple">
+               <option value="">--</option>
+               <option th:each="r : ${roles}"
+                       th:value="${r.id}"
+                       th:text="${r.nome}"
+                       th:selected="${usuario != null and #lists.contains(usuario.roles, r)}">
+               </option>
+            </select>
+       
+    </div>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Início - Cinema Sistema</title>
+    <link rel="stylesheet" th:href="@{/css/menu.css}">
+</head>
+<body>
+
+    <div th:insert="~{fragments/barraNavegacao :: navbar}"></div>
+
+    <main style="padding: 2rem; font-family: Arial, sans-serif; max-width:1000px; margin:0 auto;">
+        <header>
+            <h1>Bem-vindo ao Sistema do Cinema</h1>
+            <p>Gerencie Salas, Equipamentos e Sessões de forma simples e rápida.</p>
+        </header>
+
+        <section style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:1.5rem;">
+            <div style="flex:1 1 300px; border:1px solid #eee; padding:1rem; border-radius:6px; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+                <h2>Salas</h2>
+                <p>Gerencie número, capacidade, tipo e equipamentos das salas.</p>
+                <p>Total de salas: <strong th:text="${totalSalas}">0</strong></p>
+                <p>
+                    <a th:href="@{/sala/list}">Listar Salas</a> |
+                    <a th:href="@{/sala/form}">Cadastrar Sala</a>
+                </p>
+            </div>
+
+            <div style="flex:1 1 300px; border:1px solid #eee; padding:1rem; border-radius:6px; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+                <h2>Equipamentos</h2>
+                <p>Cadastre projetores, som, dimensões de tela e outros detalhes.</p>
+                <p>Total de equipamentos: <strong th:text="${totalEquipamentos}">0</strong></p>
+                <p>
+                    <a th:href="@{/equipamento/list}">Listar Equipamentos</a> |
+                    <a th:href="@{/equipamento/form}">Cadastrar Equipamento</a>
+                </p>
+            </div>
+
+            <div style="flex:1 1 300px; border:1px solid #eee; padding:1rem; border-radius:6px; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+                <h2>Sessões</h2>
+                <p>Agende sessões com data/hora, idioma, duração e legendas.</p>
+                <p>Total de sessões: <strong th:text="${totalSessoes}">0</strong></p>
+                <p>
+                    <a th:href="@{/sessao/list}">Listar Sessões</a> |
+                    <a th:href="@{/sessao/form}">Cadastrar Sessão</a>
+                </p>
+            </div>
+        </section>
+
+        <hr style="margin:1.5rem 0;">
+
+        <section style="display:flex; gap:1rem; flex-wrap:wrap;">
+            <div style="flex:1 1 45%; border:1px solid #eee; padding:1rem; border-radius:6px;">
+                <h2>Usuários</h2>
+                <p>Total de usuários: <strong th:text="${totalUsuarios}">0</strong></p>
+                <ul>
+                    <li th:each="u : ${usuarios}">
+                        <strong th:text="${u.nome}">Nome</strong> — <span th:text="${u.matricula}">matrícula</span>
+                        <br/>
+                        Roles: <span th:each="r : ${u.roles}" th:text="${r.nome} + ' '">ROLE</span>
+                    </li>
+                </ul>
+                <p><a th:href="@{/usuario/list}">Ir para lista de usuários</a></p>
+            </div>
+
+            <div style="flex:1 1 45%; border:1px solid #eee; padding:1rem; border-radius:6px;">
+                <h2>Roles</h2>
+                <p>Total de roles: <strong th:text="${totalRoles}">0</strong></p>
+                <ul>
+                    <li th:each="role : ${roles}" th:text="${role.nome}">Role</li>
+                </ul>
+                <p><a th:href="@{/role/list}">Ir para lista de roles</a></p>
+            </div>
+        </section>
+
+        <section>
+            <h3>Recomendações</h3>
+            <ul>
+                <li>Verifique disponibilidade de equipamento antes de atribuir a uma sala.</li>
+                <li>O número da sala deve ser único.</li>
+                <li>Preencha corretamente a duração da sessão em minutos.</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer style="text-align:center; padding:1rem; color:#666; font-size:0.9rem;">
+        <div th:insert="~{fragments/mensagem :: alerta}"></div>
+        © <span th:text="${T(java.time.Year).now().value}"></span> Cinema Sistema
+    </footer>
+
+</body>
+</html>

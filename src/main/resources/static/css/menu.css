@@ -62,3 +62,41 @@ body {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
+
+/* Table styles used by listing pages (roles, salas, equipamentos) */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-family: Arial, sans-serif;
+}
+
+.data-table th, .data-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.data-table thead th {
+  background-color: #f4f4f4;
+  color: #333;
+  font-weight: 600;
+}
+
+.data-table tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.data-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.data-table .actions a {
+  margin-right: 0.5rem;
+  color: #2a6df6;
+  text-decoration: none;
+}
+
+.data-table .actions a:hover {
+  text-decoration: underline;
+}

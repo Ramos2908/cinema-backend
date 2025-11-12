@@ -118,5 +118,12 @@ public class Sala implements Serializable {
         this.sessoes = sessoes;
     }
 
-	
+    // Version getter/setter to allow initializing missing DB values
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 }

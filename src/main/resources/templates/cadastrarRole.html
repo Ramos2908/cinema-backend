@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cadastrar Role</title>
+    <link rel="stylesheet" th:href="@{/css/menu.css}">
+	<script src="/js/menu.js"></script>
+</head>
+<body>
+    
+    <div th:insert="fragments/barraNavegacao :: navbar"></div>
+    <br>
+
+    <div class="form-header">
+        <h1>Cadastro de role</h1>
+    </div>
+
+    <br>
+
+    <!-- Flash / error messages -->
+    <div th:if="${mensagemSucesso}" class="alert success" th:text="${mensagemSucesso}"></div>
+    <div th:if="${mensagemErro}" class="alert error" th:text="${mensagemErro}"></div>
+    
+    <form th:action="@{/role/save}" th:object="${roleObj}" method="post">
+    <br>
+
+        <div th:insert="fragments/formRole :: formRole"></div>
+
+            <div class="button-container">
+                <button type="submit">Salvar</button>
+                <button type="button" onclick="window.location.href='/role/form'">Cancelar</button>
+            </div>
+    </form>
+</body>
+</html>

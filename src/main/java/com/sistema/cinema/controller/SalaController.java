@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sistema.cinema.entity.Sala;
@@ -15,6 +16,8 @@ import com.sistema.cinema.service.EquipamentoService;
 import com.sistema.cinema.service.SalaService;
 
 import jakarta.validation.Valid;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.OptimisticLockingFailureException;
 
 @Controller
 @RequestMapping("/sala")
@@ -76,46 +79,66 @@ public class SalaController {
 
     // === ATUALIZAR SALA ===
     @PostMapping("/edit")
-    public String atualizarSala(@Valid @ModelAttribute Sala sala, RedirectAttributes ra) {
+    public String atualizarSala(
+            @RequestParam("id") Long id,
+            @RequestParam("numeroSala") int numeroSala,
+            @RequestParam("capacidade") int capacidade,
+            @RequestParam("tipoSala") String tipoSala,
+            @RequestParam("status") String status,
+            @RequestParam(value = "equipamento.id", required = false) Long equipamentoId,
+            Model model,
+            RedirectAttributes ra) {
 
         try {
-           
-            Sala salaOriginal = salaService.findById(sala.getId());
+            // Load managed entity
+            Sala salaOriginal = salaService.findById(id);
 
-            // Verifica duplicidade do número apenas se foi alterado
-            if (salaService.existsByNumeroSalaAndIdNot(sala.getNumeroSala(), sala.getId())) {
-                ra.addFlashAttribute("mensagemErro", "O número de sala " + sala.getNumeroSala() + " já está em uso por outra sala.");
-                return "redirect:/sala/edit/" + sala.getId();
+            // Validate unique numeroSala
+            if (salaService.existsByNumeroSalaAndIdNot(numeroSala, id)) {
+                model.addAttribute("mensagemErro", "O número de sala " + numeroSala + " já está em uso por outra sala.");
+                model.addAttribute("equipamentosDisponiveis", equipamentoService.findAll());
+                model.addAttribute("sala", salaOriginal);
+                return "editarSala";
             }
 
-            // Atualiza campos no objeto gerenciado
-            salaOriginal.setNumeroSala(sala.getNumeroSala());
-            salaOriginal.setCapacidade(sala.getCapacidade());
-            salaOriginal.setTipoSala(sala.getTipoSala());
-            salaOriginal.setStatus(sala.getStatus());
+            // Apply updates
+            salaOriginal.setNumeroSala(numeroSala);
+            salaOriginal.setCapacidade(capacidade);
+            salaOriginal.setTipoSala(tipoSala);
+            salaOriginal.setStatus(status);
 
-            
-            if (sala.getEquipamento() != null && sala.getEquipamento().getId() != null) {
-                Long novoEquipId = sala.getEquipamento().getId();
-          
-                if (salaOriginal.getEquipamento() == null || !salaOriginal.getEquipamento().getId().equals(novoEquipId)) {
-                    if (salaService.existsByEquipamentoId(novoEquipId)) {
-                        ra.addFlashAttribute("mensagemErro", "Este equipamento já está cadastrado em outra sala.");
-                        return "redirect:/sala/edit/" + sala.getId();
+            if (equipamentoId != null) {
+                // verify equipment not in use by other sala
+                if (salaOriginal.getEquipamento() == null || !salaOriginal.getEquipamento().getId().equals(equipamentoId)) {
+                    if (salaService.existsByEquipamentoId(equipamentoId)) {
+                        model.addAttribute("mensagemErro", "Este equipamento já está cadastrado em outra sala.");
+                        model.addAttribute("equipamentosDisponiveis", equipamentoService.findAll());
+                        model.addAttribute("sala", salaOriginal);
+                        return "editarSala";
                     }
                 }
-                salaOriginal.setEquipamento(equipamentoService.findById(novoEquipId));
+                salaOriginal.setEquipamento(equipamentoService.findById(equipamentoId));
             } else {
                 salaOriginal.setEquipamento(null);
             }
 
+            // Save
             salaService.save(salaOriginal);
             ra.addFlashAttribute("mensagemSucesso", "Sala " + salaOriginal.getNumeroSala() + " atualizada com sucesso!");
+            return "redirect:/sala/list";
+        } catch (DataIntegrityViolationException dive) {
+            model.addAttribute("mensagemErro", "Erro ao atualizar: violação de integridade. " + dive.getMostSpecificCause().getMessage());
+            model.addAttribute("equipamentosDisponiveis", equipamentoService.findAll());
+            return "editarSala";
+        } catch (OptimisticLockingFailureException olfe) {
+            model.addAttribute("mensagemErro", "Erro ao atualizar: conflito de versão. Atualize a página e tente novamente.");
+            model.addAttribute("equipamentosDisponiveis", equipamentoService.findAll());
+            return "editarSala";
         } catch (RuntimeException e) {
-            ra.addFlashAttribute("mensagemErro", "Erro ao atualizar: " + e.getMessage());
+            model.addAttribute("mensagemErro", "Erro ao atualizar: " + e.getMessage());
+            model.addAttribute("equipamentosDisponiveis", equipamentoService.findAll());
+            return "editarSala";
         }
-
-        return "redirect:/sala/list";
     }
 
     // === LISTAR TODAS AS SALAS ===

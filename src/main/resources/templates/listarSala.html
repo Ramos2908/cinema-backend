@@ -17,7 +17,7 @@
     
     <div th:insert="fragments/mensagem :: alerta"></div>
 
-    <table>
+    <table class="data-table">
         <thead>
             <tr>
                 <th>ID</th>
@@ -25,6 +25,7 @@
                 <th>Capacidade</th> 
                 <th>Tipo de Exibição</th>
                 <th>Status</th>
+                <th>Equipamento</th>
                 <th>Ações</th>
             </tr>
         </thead>
@@ -36,16 +37,15 @@
                 <td th:text="${sala.capacidade}"></td> 
                 <td th:text="${sala.tipoSala}"></td>
                 <td th:text="${sala.status}"></td> 
+                <td th:text="${sala.equipamento.sistemaSom}"></td>
 
-                <td>
+                <td class="actions">
                     <a th:href="@{/sala/edit/{id}(id=${sala.id})}">Editar</a>
-                    
-                    <a th:href="@{/sala/delete/{id}(id=${sala.id})}"
-                    onclick="return confirm('Confirma a remoção da Sala ' + [[${sala.numeroSala}]] + '?');">Remover</a>
+                    <a th:href="@{/sala/delete/{id}(id=${sala.id})}" onclick="return confirm('Confirma a remoção da Sala ' + [[${sala.numeroSala}]] + '?');">Remover</a>
                 </td>
             </tr>
             <tr th:if="${#lists.isEmpty(salas)}">
-                <td colspan="6">Nenhuma sala cadastrada.</td>
+                <td colspan="7">Nenhuma sala cadastrada.</td>
             </tr>
         </tbody>
     </table>

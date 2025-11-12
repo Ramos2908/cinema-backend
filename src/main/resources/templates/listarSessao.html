@@ -17,7 +17,7 @@
     
     <div th:insert="fragments/mensagem :: alerta"></div>
 
-    <table>
+    <table class="data-table">
         <thead>
             <tr>
                 <th>ID</th>
@@ -25,6 +25,7 @@
                 <th>Sala</th>
                 <th>Data</th> 
                 <th>Horário</th>
+                <th>Duração</th>
                 <th>Status</th>
                 <th>Legendado</th>
                 <th>Idioma</th>
@@ -38,19 +39,21 @@
                 <td th:text="${sessao.sala != null ? 'Sala ' + sessao.sala.numeroSala : 'N/A'}"></td> 
                 <td th:text="${#dates.format(sessao.dataHora, 'dd/MM/yyyy')}"></td>
                 <td th:text="${#dates.format(sessao.dataHora, 'HH:mm')}"></td>
+                <td th:text="${sessao.duracaoMinutos > 0 ? sessao.duracaoMinutos + ' min' : 'N/A'}"></td>
                 <td th:text="${sessao.status}"></td>
                 <td th:text="${sessao.legendado ? 'Sim' : 'Não'}"></td>
                 <td th:text="${sessao.idioma != null ? sessao.idioma : 'Português'}"></td>
-                <td>
+                <td class="actions">
                     <a th:href="@{/sessao/edit/{id}(id=${sessao.id})}">Editar</a>
                     <a th:href="@{/sessao/delete/{id}(id=${sessao.id})}" 
                        onclick="return confirm('Confirma a remoção desta Sessão?');">Remover</a>
                 </td>
             </tr>
-        </tbody>
-    </table>
+            <tr th:if="${#lists.isEmpty(sessoes)}">
+                <td colspan="10">Nenhuma sessão cadastrada.</td>
+            </tr>
+         </tbody>
+     </table>
     
-    <p th:if="${sessoes.empty}">Nenhuma sessão cadastrada.</p>
-
 </body>
 </html>
