@@ -32,6 +32,14 @@
             <a th:href="@{/sessao/form}">Cadastrar</a> 
             <a th:href="@{/sessao/list}">Listar</a>
         </div>
+
+        <!-- Botão de sair -->
+        <div style="margin-top: 1rem; padding: 0 10px;">
+            <form th:action="@{/logout}" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <button type="submit">Sair</button>
+            </form>
+        </div>
     </div>
     
     <script src="/js/menu.js"></script>

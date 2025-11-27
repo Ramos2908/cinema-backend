@@ -1,8 +1,8 @@
 package com.sistema.cinema.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import jakarta.validation.Valid;
+import org.springframework.validation.BindingResult;
+import java.util.Locale;
 
 import com.sistema.cinema.entity.Role;
 import com.sistema.cinema.entity.Usuario;
@@ -31,6 +35,9 @@ public class UsuarioController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private MessageSource messageSource;
+
     // ---------------- FORMULÁRIO DE CADASTRO ----------------
     @GetMapping("/form")
     public String form(Model model) {
@@ -41,10 +48,19 @@ public class UsuarioController {
 
     // ---------------- SALVAR USUÁRIO ----------------
     @PostMapping("/save")
-    public String saveUsuario(@ModelAttribute("usuario") Usuario usuario,
-                              @org.springframework.web.bind.annotation.RequestParam(value = "roleIds", required = false) java.util.List<Long> roleIds,
+    public String saveUsuario(@Valid @ModelAttribute("usuario") Usuario usuario,
+                              BindingResult bindingResult,
+                              @RequestParam(value = "roleIds", required = false) java.util.List<Long> roleIds,
                               org.springframework.ui.Model model,
-                              RedirectAttributes redirectAttributes) {
+                              RedirectAttributes redirectAttributes,
+                              Locale locale) {
+
+        // If validation failed, return to form
+        if (bindingResult.hasErrors()) {
+            carregarRoles(model);
+            return "cadastrarUsuario";
+        }
+
         // Se vierem ids de roles, converter para entidades Role e setar no usuario
         if (roleIds != null && !roleIds.isEmpty()) {
             java.util.Set<Role> rolesSet = new java.util.HashSet<>();
@@ -59,7 +75,7 @@ public class UsuarioController {
 
         // Verifica duplicidade de matrícula
         if (usuarioService.existsByMatricula(usuario.getMatricula())) {
-            model.addAttribute("mensagemErro", "Já existe um usuário com a matrícula " + usuario.getMatricula());
+            bindingResult.rejectValue("matricula", "matricula.existe", new Object[]{usuario.getMatricula()}, null);
             carregarRoles(model);
             return "cadastrarUsuario";
         }
@@ -69,7 +85,8 @@ public class UsuarioController {
         usuarioService.save(usuario);
 
         // Use flash attribute so message survives redirect
-        redirectAttributes.addFlashAttribute("mensagemSucesso", "Usuário cadastrado com sucesso!");
+        String msg = messageSource.getMessage("usuario.cadastrado", null, locale);
+        redirectAttributes.addFlashAttribute("mensagemSucesso", msg);
         return "redirect:/usuario/list";
     }
 
@@ -91,9 +108,18 @@ public class UsuarioController {
     }
 
     @PostMapping("/edit")
-    public String editUsuarioPost(@ModelAttribute("usuario") Usuario usuario,
+    public String editUsuarioPost(@Valid @ModelAttribute("usuario") Usuario usuario,
+                                  BindingResult bindingResult,
                                   @org.springframework.web.bind.annotation.RequestParam(value = "roleIds", required = false) java.util.List<Long> roleIds,
-                                  Model model) {
+                                  Model model,
+                                  Locale locale,
+                                  RedirectAttributes redirectAttributes) {
+        // If validation failed, return to edit form
+        if (bindingResult.hasErrors()) {
+            carregarRoles(model);
+            return "editarUsuario";
+        }
+
         // Converter role ids selecionados para entidades Role
         if (roleIds != null) {
             java.util.Set<Role> rolesSet = new java.util.HashSet<>();
@@ -109,8 +135,10 @@ public class UsuarioController {
         // Verifica se matrícula foi alterada e já existe em outro usuário
         if (!original.getMatricula().equals(usuario.getMatricula())
                 && usuarioService.existsByMatricula(usuario.getMatricula())) {
-            model.addAttribute("mensagemErro", "Já existe outro usuário com a matrícula " + usuario.getMatricula());
-            return listUsuarios(model);
+            bindingResult.rejectValue("matricula", "matricula.existe.outro", new Object[]{usuario.getMatricula()}, null);
+            carregarRoles(model);
+            model.addAttribute("usuario", usuario);
+            return "editarUsuario";
         }
 
         // Se senha foi alterada, reencoda
@@ -119,16 +147,18 @@ public class UsuarioController {
         }
 
         usuarioService.save(usuario);
-        model.addAttribute("mensagemSucesso", "Usuário atualizado com sucesso!");
-        return listUsuarios(model);
+        String msg = messageSource.getMessage("usuario.atualizado", null, locale);
+        redirectAttributes.addFlashAttribute("mensagemSucesso", msg);
+        return "redirect:/usuario/list";
     }
 
     // ---------------- DELETAR USUÁRIO ----------------
     @GetMapping("/delete/{id}")
-    public String deleteUsuario(@PathVariable Long id, Model model) {
+    public String deleteUsuario(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes, Locale locale) {
         usuarioService.deleteById(id);
-        model.addAttribute("mensagemSucesso", "Usuário deletado com sucesso!");
-        return listUsuarios(model);
+        String msg = messageSource.getMessage("usuario.deletado", null, locale);
+        redirectAttributes.addFlashAttribute("mensagemSucesso", msg);
+        return "redirect:/usuario/list";
     }
 
     // ---------------- MÉTODO AUXILIAR ----------------

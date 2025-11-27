@@ -30,28 +30,28 @@ public class Usuario implements UserDetails{
 	@GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotBlank(message = "O nome do usuario é obrigatória")
+    @NotBlank(message = "{nome.vazio}")
 	@Column(nullable = false)
     private String nome;
 
-    @NotBlank(message = "A matrícula do usuario é obrigatória")
+    @NotBlank(message = "{matricula.vazio}")
 	@Column(unique = true, nullable = false)
     private String matricula;
 
-    @NotBlank(message = "O login do usuario é obrigatório")
+    @NotBlank(message = "{login.vazio}")
 	@Column(unique = true, nullable = false)
     private String login;
 
-    @NotBlank(message = "A senha do usuario é obrigatória")
+    @NotBlank(message = "{senha.vazio}")
 	@Column(nullable = false)
     private String senha;
 
-    @NotNull(message = "A data de nascimento do usuario é obrigatória")
+    @NotNull(message = "{data.vazio}")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "nascimento", nullable = false)
     private Date dataNascimento;
 
-    @NotBlank(message = "O e-mail do usuario é obrigatório")
+    @NotBlank(message = "{email.vazio}")
 	@Column(unique = true, nullable = false)
     private String email;
 
@@ -129,19 +129,19 @@ public class Usuario implements UserDetails{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // TODO Auto-generated method stub
+        // TODO: implementar conforme necessário (retorna as roles/autoridades do usuário)
         return roles;
     }
 
     @Override
     public String getPassword() {
-        // TODO Auto-generated method stub
+        // Retorna a senha codificada do usuário
         return senha;
     }
 
     @Override
     public String getUsername() {
-        // TODO Auto-generated method stub
+        // Retorna o identificador de login do usuário
         return login;
     }
 

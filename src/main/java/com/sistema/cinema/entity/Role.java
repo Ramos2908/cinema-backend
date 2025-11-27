@@ -53,7 +53,7 @@ public class Role implements GrantedAuthority{
     
     @Override
     public String getAuthority() {
-        // TODO Auto-generated method stub
+        // Retorna o nome da role como autoridade
         return nome;
     }
 	
