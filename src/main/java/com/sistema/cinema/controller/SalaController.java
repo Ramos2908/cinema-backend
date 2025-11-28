@@ -90,10 +90,10 @@ public class SalaController {
             RedirectAttributes ra) {
 
         try {
-            // Load managed entity
+        	// Carrega entidade gerenciada
             Sala salaOriginal = salaService.findById(id);
 
-            // Validate unique numeroSala
+         // Validar numeroSala único
             if (salaService.existsByNumeroSalaAndIdNot(numeroSala, id)) {
                 model.addAttribute("mensagemErro", "O número de sala " + numeroSala + " já está em uso por outra sala.");
                 model.addAttribute("equipamentosDisponiveis", equipamentoService.findAll());
@@ -101,14 +101,14 @@ public class SalaController {
                 return "editarSala";
             }
 
-            // Apply updates
+          //Aplica atualizações
             salaOriginal.setNumeroSala(numeroSala);
             salaOriginal.setCapacidade(capacidade);
             salaOriginal.setTipoSala(tipoSala);
             salaOriginal.setStatus(status);
 
             if (equipamentoId != null) {
-                // verify equipment not in use by other sala
+            	// verificar se o equipamento não está sendo usado por outra sala
                 if (salaOriginal.getEquipamento() == null || !salaOriginal.getEquipamento().getId().equals(equipamentoId)) {
                     if (salaService.existsByEquipamentoId(equipamentoId)) {
                         model.addAttribute("mensagemErro", "Este equipamento já está cadastrado em outra sala.");
@@ -122,7 +122,7 @@ public class SalaController {
                 salaOriginal.setEquipamento(null);
             }
 
-            // Save
+         // Salvar
             salaService.save(salaOriginal);
             ra.addFlashAttribute("mensagemSucesso", "Sala " + salaOriginal.getNumeroSala() + " atualizada com sucesso!");
             return "redirect:/sala/list";

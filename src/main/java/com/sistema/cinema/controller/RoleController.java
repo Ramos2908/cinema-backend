@@ -84,7 +84,6 @@ public class RoleController {
             roleService.deleteById(id);
             model.addAttribute("mensagemSucesso", "Papel deletado com sucesso!");
         } catch (IllegalStateException ex) {
-            // role is referenced by users — show friendly message
             model.addAttribute("mensagemErro", ex.getMessage());
         }
         return listRoles(model);

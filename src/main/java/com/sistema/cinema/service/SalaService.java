@@ -1,11 +1,9 @@
 package com.sistema.cinema.service;
 
 import java.util.List;
-import java.util.Optional; // Importado para um método de busca mais seguro, se necessário
-
+import java.util.Optional; 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.sistema.cinema.entity.Sala;
 import com.sistema.cinema.repository.SalaRepository;
 

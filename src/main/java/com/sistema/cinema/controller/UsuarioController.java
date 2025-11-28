@@ -55,7 +55,7 @@ public class UsuarioController {
                               RedirectAttributes redirectAttributes,
                               Locale locale) {
 
-        // If validation failed, return to form
+        // Se houver erros de validação, retornar ao formulário
         if (bindingResult.hasErrors()) {
             carregarRoles(model);
             return "cadastrarUsuario";
