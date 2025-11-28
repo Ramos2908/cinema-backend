@@ -12,6 +12,10 @@ import com.sistema.cinema.service.SessaoService;
 import com.sistema.cinema.service.UsuarioService;
 import com.sistema.cinema.service.RoleService;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.GrantedAuthority;
+
 @Controller
 @RequestMapping
 public class PaginaInicialController {
@@ -36,11 +40,27 @@ public class PaginaInicialController {
         model.addAttribute("totalSalas", salaService.findAll().size());
         model.addAttribute("totalEquipamentos", equipamentoService.findAll().size());
         model.addAttribute("totalSessoes", sessaoService.findAll().size());
-        // Add users and roles info
-        model.addAttribute("totalUsuarios", usuarioService.findAll().size());
-        model.addAttribute("totalRoles", roleService.findAll().size());
-        model.addAttribute("usuarios", usuarioService.findAll());
-        model.addAttribute("roles", roleService.findAll());
+
+        // check if current user has ADMIN role
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdmin = false;
+        if (auth != null && auth.isAuthenticated()) {
+            for (GrantedAuthority ga : auth.getAuthorities()) {
+                if ("ROLE_ADMIN".equals(ga.getAuthority())) {
+                    isAdmin = true;
+                    break;
+                }
+            }
+        }
+        model.addAttribute("isAdmin", isAdmin);
+
+        if (isAdmin) {
+            model.addAttribute("totalUsuarios", usuarioService.findAll().size());
+            model.addAttribute("totalRoles", roleService.findAll().size());
+            model.addAttribute("usuarios", usuarioService.findAll());
+            model.addAttribute("roles", roleService.findAll());
+        }
+
         return "paginaInicial";
     }
 }

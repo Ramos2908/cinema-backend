@@ -50,29 +50,29 @@
 
         <hr style="margin:1.5rem 0;">
 
-        <section style="display:flex; gap:1rem; flex-wrap:wrap;">
-            <div style="flex:1 1 45%; border:1px solid #eee; padding:1rem; border-radius:6px;">
-                <h2>Usuários</h2>
-                <p>Total de usuários: <strong th:text="${totalUsuarios}">0</strong></p>
-                <ul>
-                    <li th:each="u : ${usuarios}">
-                        <strong th:text="${u.nome}">Nome</strong> — <span th:text="${u.matricula}">matrícula</span>
-                        <br/>
-                        Roles: <span th:each="r : ${u.roles}" th:text="${r.nome} + ' '">ROLE</span>
-                    </li>
-                </ul>
-                <p><a th:href="@{/usuario/list}">Ir para lista de usuários</a></p>
-            </div>
+        <section th:if="${isAdmin}" style="display:flex; gap:1rem; flex-wrap:wrap;">
+             <div style="flex:1 1 45%; border:1px solid #eee; padding:1rem; border-radius:6px;">
+                 <h2>Usuários</h2>
+                 <p>Total de usuários: <strong th:text="${totalUsuarios}">0</strong></p>
+                 <ul>
+                     <li th:each="u : ${usuarios}">
+                         <strong th:text="${u.nome}">Nome</strong> — <span th:text="${u.matricula}">matrícula</span>
+                         <br/>
+                         Roles: <span th:each="r : ${u.roles}" th:text="${r.nome} + ' '">ROLE</span>
+                     </li>
+                 </ul>
+                 <p><a th:href="@{/usuario/list}">Ir para lista de usuários</a></p>
+             </div>
 
-            <div style="flex:1 1 45%; border:1px solid #eee; padding:1rem; border-radius:6px;">
-                <h2>Roles</h2>
-                <p>Total de roles: <strong th:text="${totalRoles}">0</strong></p>
-                <ul>
-                    <li th:each="role : ${roles}" th:text="${role.nome}">Role</li>
-                </ul>
-                <p><a th:href="@{/role/list}">Ir para lista de roles</a></p>
-            </div>
-        </section>
+             <div style="flex:1 1 45%; border:1px solid #eee; padding:1rem; border-radius:6px;">
+                 <h2>Roles</h2>
+                 <p>Total de roles: <strong th:text="${totalRoles}">0</strong></p>
+                 <ul>
+                     <li th:each="role : ${roles}" th:text="${role.nome}">Role</li>
+                 </ul>
+                 <p><a th:href="@{/role/list}">Ir para lista de roles</a></p>
+             </div>
+         </section>
 
         <section>
             <h3>Recomendações</h3>
